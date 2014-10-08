@@ -77,4 +77,8 @@ public class GameField {
 		}
 		return out;
 	}
+
+	public void reset() {
+		gameField = initField();
+	}
 }

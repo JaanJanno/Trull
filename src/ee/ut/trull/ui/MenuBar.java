@@ -2,11 +2,14 @@ package ee.ut.trull.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 public class MenuBar extends JMenuBar {
 
@@ -21,7 +24,6 @@ public class MenuBar extends JMenuBar {
 		add(beginMenu);
 
 		JMenuItem newAction = new JMenuItem("Uus mäng");
-		JMenuItem infoAction = new JMenuItem("Info");
 		JMenuItem exitAction = new JMenuItem("Välju mängust");
 
 		JRadioButtonMenuItem radioAction1 = new JRadioButtonMenuItem("Lihtne");
@@ -42,7 +44,6 @@ public class MenuBar extends JMenuBar {
 		bg2.add(beginRadioAction2);
 
 		fileMenu.add(newAction);
-		fileMenu.add(infoAction);
 		fileMenu.addSeparator();
 		fileMenu.add(exitAction);
 
@@ -52,11 +53,44 @@ public class MenuBar extends JMenuBar {
 
 		beginMenu.add(beginRadioAction1);
 		beginMenu.add(beginRadioAction2);
+		
+		MenuListener listener = new MenuListener() {
+			
+			@Override
+			public void menuSelected(MenuEvent e) {
+				window.repaint();
+			}
+			
+			@Override
+			public void menuDeselected(MenuEvent e) {
+				window.repaint();
+			}
+			
+			@Override
+			public void menuCanceled(MenuEvent e) {
+				window.repaint();
+				
+			}
+		};
+		
+		fileMenu.addMenuListener(listener);
+		editMenu.addMenuListener(listener);
+		beginMenu.addMenuListener(listener);
+
 
 		exitAction.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				window.dispose();
+			}
+		});
+		
+		newAction.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				window.getView().getLoop().reset();
+				window.repaint();
 			}
 		});
 	}
