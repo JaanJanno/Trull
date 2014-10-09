@@ -8,10 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import ee.ut.trull.game.GameLoop;
 import ee.ut.trull.game.GameLoop.GameState;
 import ee.ut.trull.game.field.GameField;
@@ -29,6 +26,7 @@ public class MainView extends JPanel implements MouseListener {
 	public MainView() {
 		super(true); // Enabled double buffering
 		loop = new GameLoop(new GameField());
+		loop.init();
 		addMouseListener(this);
 	}
 
@@ -77,8 +75,8 @@ public class MainView extends JPanel implements MouseListener {
 	}
 
 	private void drawField(GameField field, Graphics2D g) {
-		for (int y = 0; y<3; y++){		
-			for (int x = 0; x<3; x++){
+		for (int x = 0; x<3; x++){		
+			for (int y = 0; y<3; y++){
 				if(field.getSlot(x, y) == FieldSlot.CIRCLE)
 					drawOval(x, y, width, hight, g);			
 				else if(field.getSlot(x, y) == FieldSlot.CROSS)

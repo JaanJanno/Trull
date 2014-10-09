@@ -17,28 +17,17 @@ public class MenuBar extends JMenuBar {
 
 	public MenuBar(final MainWindow window) {
 		JMenu fileMenu = new JMenu("Mäng");
-		JMenu editMenu = new JMenu("Raskusaste");
 		JMenu beginMenu = new JMenu("Alustaja");
 		add(fileMenu);
-		add(editMenu);
 		add(beginMenu);
 
 		JMenuItem newAction = new JMenuItem("Uus mäng");
 		JMenuItem exitAction = new JMenuItem("Välju mängust");
 
-		JRadioButtonMenuItem radioAction1 = new JRadioButtonMenuItem("Lihtne");
-		JRadioButtonMenuItem radioAction2 = new JRadioButtonMenuItem(
-				"Tavaline", true);
-		JRadioButtonMenuItem radioAction3 = new JRadioButtonMenuItem("Võimatu");
-		ButtonGroup bg = new ButtonGroup();
-		bg.add(radioAction1);
-		bg.add(radioAction2);
-		bg.add(radioAction3);
-
 		JRadioButtonMenuItem beginRadioAction1 = new JRadioButtonMenuItem(
-				"Mängija");
+				"Mängija", true);
 		JRadioButtonMenuItem beginRadioAction2 = new JRadioButtonMenuItem(
-				"Arvuti", true);
+				"Arvuti");
 		ButtonGroup bg2 = new ButtonGroup();
 		bg2.add(beginRadioAction1);
 		bg2.add(beginRadioAction2);
@@ -46,10 +35,6 @@ public class MenuBar extends JMenuBar {
 		fileMenu.add(newAction);
 		fileMenu.addSeparator();
 		fileMenu.add(exitAction);
-
-		editMenu.add(radioAction1);
-		editMenu.add(radioAction2);
-		editMenu.add(radioAction3);
 
 		beginMenu.add(beginRadioAction1);
 		beginMenu.add(beginRadioAction2);
@@ -74,8 +59,27 @@ public class MenuBar extends JMenuBar {
 		};
 		
 		fileMenu.addMenuListener(listener);
-		editMenu.addMenuListener(listener);
 		beginMenu.addMenuListener(listener);
+		
+		beginRadioAction1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				window.getView().getLoop().setAiBegins(false);
+				window.getView().getLoop().init();			
+				window.repaint();
+			}
+		});
+		
+		beginRadioAction2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				window.getView().getLoop().setAiBegins(true);
+				window.getView().getLoop().init();		
+				window.repaint();
+			}
+		});
 
 
 		exitAction.addActionListener(new ActionListener() {
@@ -89,7 +93,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				window.getView().getLoop().reset();
+				window.getView().getLoop().init();
 				window.repaint();
 			}
 		});

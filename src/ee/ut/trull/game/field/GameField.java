@@ -18,6 +18,19 @@ public class GameField {
 				throw new IllegalArgumentException();
 			}
 		}
+		
+		public int getVal() {
+			switch (this) {
+			case EMPTY:
+				return 2;
+			case CROSS:
+				return 3;
+			case CIRCLE:
+				return 5;
+			default:
+				throw new IllegalArgumentException();
+			}
+		}
 	}
 
 	private FieldSlot[][] gameField;
@@ -29,6 +42,18 @@ public class GameField {
 	public FieldSlot getSlot(int x, int y) {
 		return gameField[x][y];
 	}
+	
+	public FieldSlot getSlot(int i) {
+		return gameField[(i - 1) % 3][(i - 1) / 3];
+	}
+	
+	public void setSlot(int x, int y, FieldSlot value) {
+		gameField[x][y] = value;
+	}
+	
+	public void setSlot(int i, FieldSlot value) {
+		gameField[(i - 1) % 3][(i - 1) / 3] = value;
+	}
 
 	public FieldSlot[][] getLines() {
 		FieldSlot[][] lines = new FieldSlot[][] { getCol(0), getCol(1),
@@ -37,11 +62,11 @@ public class GameField {
 		return lines;
 	}
 
-	public FieldSlot[] getRow(int x) {
+	public FieldSlot[] getCol(int x) {
 		return gameField[x];
 	}
 
-	public FieldSlot[] getCol(int x) {
+	public FieldSlot[] getRow(int x) {
 		return new FieldSlot[] { gameField[0][x], gameField[1][x],
 				gameField[2][x] };
 	}
@@ -49,10 +74,6 @@ public class GameField {
 	public FieldSlot[] getDiag(int x) {
 		return new FieldSlot[] { gameField[0][2 * x], gameField[1][1],
 				gameField[2][2 - 2 * x] };
-	}
-
-	public void setSlot(int x, int y, FieldSlot value) {
-		gameField[x][y] = value;
 	}
 
 	private void setGameField(FieldSlot[][] gameField) {

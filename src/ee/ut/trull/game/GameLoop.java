@@ -1,5 +1,6 @@
 package ee.ut.trull.game;
 
+import ee.ut.trull.game.ai.AiPlayer;
 import ee.ut.trull.game.field.GameField;
 import ee.ut.trull.game.field.GameField.FieldSlot;
 import ee.ut.trull.game.field.GameFieldAnalyser;
@@ -9,6 +10,8 @@ public class GameLoop {
 	private GameField field;
 	private GameFieldAnalyser analyser;
 	private GameState state = GameState.CROSS_MOVE;
+	private boolean aiBegins = false;
+	private AiPlayer ai;
 
 	public enum GameState {
 		CROSS_MOVE, CIRCLE_MOVE, CROSS_WIN, CIRCLE_WIN, DRAW
@@ -17,6 +20,7 @@ public class GameLoop {
 	public GameLoop(GameField field) {
 		this.field = field;
 		analyser = new GameFieldAnalyser(field);
+		ai = new AiPlayer(field);
 	}
 
 	public GameField getField() {
@@ -27,9 +31,22 @@ public class GameLoop {
 		return state;
 	}
 
+	public void setAiBegins(boolean aiBegins) {
+		this.aiBegins = aiBegins;
+	}
+
 	public void handlePress(int x, int y) {
 		
 		handlePlayerSelection(x, y);
+		handleWin();
+		if (aiBegins && state == GameState.CROSS_MOVE){
+			ai.makeMove();
+			state = GameState.CIRCLE_MOVE;
+		}			
+		if (!aiBegins && state == GameState.CIRCLE_MOVE){
+			ai.makeMove();
+			state = GameState.CROSS_MOVE;
+		}
 		handleWin();
 	}
 	
@@ -66,8 +83,14 @@ public class GameLoop {
 		}
 	}
 
-	public void reset() {
-		field.reset();
-		state = GameState.CROSS_MOVE;
+	public void init() {
+		field.reset();	
+		if(aiBegins){
+			ai.makeMove();
+			state = GameState.CIRCLE_MOVE;
+		}
+		else {
+			state = GameState.CROSS_MOVE;
+		}
 	}
 }
