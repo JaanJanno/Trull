@@ -3,6 +3,15 @@ package ee.ut.trull.game.ai;
 import ee.ut.trull.game.field.GameField;
 import ee.ut.trull.game.field.GameField.FieldSlot;
 
+/**
+ * @author Jaan Janno
+ */
+
+/**
+ * Klass, milles sisalduvad reeglid, mille järgi
+ * arvuti mängija vastu mängib.
+ */
+
 public class AiPlayer {
 	
 	private GameField field;
@@ -10,6 +19,11 @@ public class AiPlayer {
 	public AiPlayer(GameField field) {
 		this.field = field;
 	}
+	
+	/**
+	 * Igale käigunumbrile on olemas vastavad instruktsioonid,
+	 * kuidas käituda.
+	 */
 
 	public void makeMove() {
 		switch (getMoveNumber()) {
@@ -33,6 +47,11 @@ public class AiPlayer {
 			move789(FieldSlot.CROSS, FieldSlot.CIRCLE); break;
 		}
 	}
+	
+	/**
+	 * Kui võimalik, siis võidab. Peatab vastase võidu, kui
+	 * vaja. Muidu läheb suvalisse kohta.
+	 */
 
 	private void move789(FieldSlot player, FieldSlot enemy) {
 		if (tryWin(player) != 0) {
@@ -48,6 +67,11 @@ public class AiPlayer {
 			}
 		}
 	}
+	
+	/**
+	 * Kui võimalik, siis võidab. Peatab vastase võidu, kui
+	 * vaja. Muidu rakendab find2().
+	 */
 
 	private void move6() { // CIRCLE
 		if (tryWin(FieldSlot.CIRCLE) != 0) {
@@ -58,6 +82,12 @@ public class AiPlayer {
 			find2();
 		}
 	}
+	
+	/**
+	 * Kui võimalik, teeb võidukäigu, kui ei
+	 * blokeerib vastase võidu. Muidu läheb üles
+	 * paremale (ruut 3) või alla vasakule. (ruut 7)
+	 */
 
 	private void move5() { // CROSS
 		if (tryWin(FieldSlot.CROSS) != 0) {
@@ -71,6 +101,12 @@ public class AiPlayer {
 				field.setSlot(2, 0, FieldSlot.CROSS);
 		}
 	}
+	
+	/**
+	 * Blokeerib vajadusel vastase võidu.
+	 * Seejärel kontrollib, kas on kahvli tekkimine
+	 * võimalik. Kui ei, rakendab find2().
+	 */
 
 	private void move4() { // CIRCLE
 		if (tryWin(FieldSlot.CROSS) != 0) {
@@ -81,6 +117,10 @@ public class AiPlayer {
 			find2();
 		}
 	}
+	
+	/**
+	 * Blokeerib kahvli tekkimise.
+	 */
 
 	private boolean checkFork() {
 		if (field.getSlot(5) == FieldSlot.CROSS
@@ -90,6 +130,11 @@ public class AiPlayer {
 		}
 		return false;
 	}
+	
+	/**
+	 * Üritab käia alla paremale. (ruut 9)
+	 * Kui ei saa, käib üles paremale.
+	 */
 
 	private void move3() { // CROSS
 		if (field.getSlot(2, 2) == FieldSlot.EMPTY) {
@@ -98,6 +143,11 @@ public class AiPlayer {
 			field.setSlot(2, 0, FieldSlot.CROSS);
 		}
 	}
+	
+	/**
+	 * Proovib käia keskele (ruut 5). Kui ei saa,
+	 * käib üles vasakule. (ruut 1)
+	 */
 
 	private void move2() { // CIRCLE
 		if (field.getSlot(1, 1) == FieldSlot.EMPTY) {
@@ -106,10 +156,19 @@ public class AiPlayer {
 			field.setSlot(0, 0, FieldSlot.CIRCLE);
 		}
 	}
+	
+	/**
+	 * Käib keskele (ruut 5).
+	 */
 
 	private void move1() { // CROSS
 		field.setSlot(1, 1, FieldSlot.CROSS);
 	}
+	
+	/**
+	 * Tagastab kas sisendiks antud kujundil
+	 * on mõnes reas võimalik võita.
+	 */
 
 	private int tryWin(FieldSlot player) {
 
@@ -211,6 +270,10 @@ public class AiPlayer {
 
 		return 0;
 	}
+	
+	/**
+	 * Tagasta, kas antud reas on võimalik võita.
+	 */
 
 	private boolean isWon(FieldSlot[] line, FieldSlot player) {
 		int eCount = 0;
@@ -225,6 +288,11 @@ public class AiPlayer {
 			return true;
 		return false;
 	}
+	
+	/**
+	 * Kui võimalik valib keskmise ruudu, kui ei
+	 * siis eelistatavalt suvalise mittenurkmise.
+	 */
 
 	private void find2() {
 		if (field.getSlot(1, 1) == FieldSlot.EMPTY) {
@@ -248,6 +316,10 @@ public class AiPlayer {
 				field.setSlot(9, FieldSlot.CIRCLE);
 		}
 	}
+	
+	/**
+	 * Arvutab, mitmes käik on käsil.
+	 */
 
 	private int getMoveNumber() {
 		int num = 10;

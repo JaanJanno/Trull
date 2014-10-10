@@ -2,18 +2,36 @@ package ee.ut.trull.game.field;
 
 import ee.ut.trull.game.field.GameField.FieldSlot;
 
+/**
+ * @author Jaan Janno
+ */
+
+/**
+ * Klass, mis analüüsib mänguvälja seisu.
+ */
+
 public class GameFieldAnalyser {
 
+	/**
+	 * Mänguseisu defineerib enum, mille
+	 * väärtus võib olla kas, risti või ringi võit,
+	 * viik või lõpuolukorra puudumine.
+	 */
+	
 	public enum WinState {
 		NO_WIN, CROSS_WIN, CIRCLE_WIN, DRAW
 	}
 
-	private GameField field;
+	private GameField field; // Analüüsitava mänguvälja isend.
 
 	public GameFieldAnalyser(GameField field) {
 		this.field = field;
 	}
 
+	/**
+	 * Analüüsib mänguvälja ja tagastab selle oleku.
+	 */
+	
 	public WinState getState() {
 		for (FieldSlot[] line: field.getLines()){
 			if (compareSlots(line)){
@@ -29,6 +47,10 @@ public class GameFieldAnalyser {
 		
 		return WinState.NO_WIN;
 	}
+	
+	/**
+	 * Kontrollib kas tegemist on viigiga.
+	 */
 
 	private boolean checkDraw() {
 		for (int y = 0; y<3; y++){		
@@ -39,6 +61,11 @@ public class GameFieldAnalyser {
 		}
 		return true;
 	}
+	
+	/**
+	 * Tagastab, kas sisendiks saadud ruutude massiivi kõik
+	 * kõik elemendid on võrdsed.
+	 */
 
 	private boolean compareSlots(GameField.FieldSlot[] slots) {
 		for (GameField.FieldSlot slot : slots) {

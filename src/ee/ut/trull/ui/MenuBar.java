@@ -11,15 +11,32 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+/**
+ * @author Jaan Janno
+ */
+
+/**
+ * Klass ülemise menüüriba loomiseks.
+ */
+
 public class MenuBar extends JMenuBar {
 
 	private static final long serialVersionUID = -3531119364226212118L;
 
 	public MenuBar(final MainWindow window) {
+		
+		/*
+		 * Defineerib menüüriba valikud.
+		 */
+		
 		JMenu fileMenu = new JMenu("Mäng");
 		JMenu beginMenu = new JMenu("Alustaja");
 		add(fileMenu);
 		add(beginMenu);
+		
+		/*
+		 * Seostab valikutega alamvalikud..
+		 */
 
 		JMenuItem newAction = new JMenuItem("Uus mäng");
 		JMenuItem exitAction = new JMenuItem("Välju mängust");
@@ -38,6 +55,10 @@ public class MenuBar extends JMenuBar {
 
 		beginMenu.add(beginRadioAction1);
 		beginMenu.add(beginRadioAction2);
+		
+		/*
+		 * Defineerib, et menüüribaga manipuleerides tuleb kasutajaliides ümber joonistada.
+		 */
 		
 		MenuListener listener = new MenuListener() {
 			
@@ -61,6 +82,11 @@ public class MenuBar extends JMenuBar {
 		fileMenu.addMenuListener(listener);
 		beginMenu.addMenuListener(listener);
 		
+		/*
+		 * Ühendab mängu alustaja valimisega seonduva
+		 * loogika nuppudega.
+		 */
+		
 		beginRadioAction1.addActionListener(new ActionListener() {
 			
 			@Override
@@ -81,6 +107,9 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 
+		/*
+		 * Väljumisnupule seotakse väljumise funktsioon.
+		 */
 
 		exitAction.addActionListener(new ActionListener() {
 			@Override
@@ -88,6 +117,10 @@ public class MenuBar extends JMenuBar {
 				window.dispose();
 			}
 		});
+		
+		/*
+		 * Uue mängu nupp seotakse mängu käiku kontrolliva klassiga.
+		 */
 		
 		newAction.addActionListener(new ActionListener() {
 			

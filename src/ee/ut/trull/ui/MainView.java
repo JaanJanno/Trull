@@ -14,27 +14,45 @@ import ee.ut.trull.game.GameLoop.GameState;
 import ee.ut.trull.game.field.GameField;
 import ee.ut.trull.game.field.GameField.FieldSlot;
 
+/**
+ * @author Jaan Janno
+ */
+
+/**
+ * Klass, mis defineerib mänguvälja väljanägemise. Implementeerib ka
+ * MouseListener klassi, et võimaldada vaate hiirega manipuleerimise.
+ */
+
 public class MainView extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = 4056960530231784348L;
 	
-	private GameLoop loop;
+	private GameLoop loop; // Mänguloogikat kontrolliv objekt.
 	
-	int hight = 100;
+	int hight = 100; // Mängu akna suuruseid iseloomustavad arvud.
 	int width = 100;
 
 	public MainView() {
 		super(true); // Enabled double buffering
 		loop = new GameLoop(new GameField());
-		loop.init();
-		addMouseListener(this);
+		loop.init(); // Alustab mängu kulgu kontrolliva klassi töö.
+		addMouseListener(this); // Seob hiire sisendi.
 	}
 
 	@Override
-	public void paintComponent(Graphics graphics) {		
+	public void paintComponent(Graphics graphics) {
+		
+		/*
+		 * Esmalt kogutakse info vaate jaoks eraldatud ekraaniruumi kohta.
+		 */
+		
 		Graphics2D g = (Graphics2D) graphics;	
 		hight = g.getClipBounds().height;
 		width = g.getClipBounds().width;
+		
+		/*
+		 * Valitakse sätted hilisemaks joonistamiseks.
+		 */
 		
 		g.setFont(new Font("Arial", 0, 50));
 		g.setStroke(new BasicStroke(5));
@@ -42,10 +60,14 @@ public class MainView extends JPanel implements MouseListener {
                 RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-		drawField(loop.getField(), g);		
+		drawField(loop.getField(), g);
 		drawGrid(g);
 		drawSplash(g);
 	}
+	
+	/**
+	 * Joonistab teate võitude või viikide kohta.
+	 */
 	
 	private void drawSplash(Graphics2D g){
 		if (loop.getState() != GameState.CIRCLE_MOVE && loop.getState() != GameState.CROSS_MOVE)
@@ -67,12 +89,21 @@ public class MainView extends JPanel implements MouseListener {
 		g.setColor(new Color(0,0,0));
 	}
 	
+	/**
+	 * Joonistab mänguvälja ruudustiku.
+	 */
+	
 	private void drawGrid(Graphics2D g) {
 		g.drawLine(0, hight / 3, width, hight / 3);
 		g.drawLine(0, hight / 3 * 2, width, hight / 3 * 2);		
 		g.drawLine(width / 3, 0, width / 3, hight);
 		g.drawLine(width / 3 * 2, 0, width / 3 * 2, hight);
 	}
+	
+	/**
+	 * Joonistab mänguväljale ristid ja ringid.
+	 * @param field Mänguväli
+	 */
 
 	private void drawField(GameField field, Graphics2D g) {
 		for (int x = 0; x<3; x++){		
@@ -84,19 +115,36 @@ public class MainView extends JPanel implements MouseListener {
 			}
 		}
 	}
+	
+	/**
+	 * Joonistab antud koordinaatidega ruudule ringi.
+	 */
 
 	private void drawOval(int x, int y, int w, int h, Graphics g){
 		g.drawOval(w / 3 * x + 10, h / 3 * y + 10, w / 3 - 20, h / 3 - 20);
 	}
 	
+	/**
+	 * Joonistab antud koordinaatidega ruudule risti.
+	 */
+	
 	private void drawCross(int x, int y, int w, int h, Graphics g){
 		g.drawLine(w / 3 * x + 10, h / 3 * y + 10, w / 3 * (x + 1) - 20, h / 3 * (y + 1) - 20);
 		g.drawLine(w / 3 * x + 10, h / 3 * (y + 1) - 20, w / 3 * (x + 1) - 20, h / 3 * y + 10);
 	}
+	
+	/**
+	 * Tagastab mänguloogikat kontrolliva objekti.
+	 */
 
 	public GameLoop getLoop() {
 		return loop;
 	}
+	
+	/**
+	 * Kuulab sisendit hiirelt ning annab selle
+	 * edasi mängu loogikat kontrollivale klassile.
+	 */
 
 	@Override
 	public void mousePressed(MouseEvent e) {

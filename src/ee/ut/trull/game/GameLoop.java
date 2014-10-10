@@ -5,14 +5,27 @@ import ee.ut.trull.game.field.GameField;
 import ee.ut.trull.game.field.GameField.FieldSlot;
 import ee.ut.trull.game.field.GameFieldAnalyser;
 
+/**
+ * @author Jaan Janno
+ */
+
+/**
+ * Klass, mis tegeleb mängu loogikaga.
+ */
+
 public class GameLoop {
 
 	private GameField field;
 	private GameFieldAnalyser analyser;
-	private GameState state = GameState.CROSS_MOVE;
+	private GameState state = GameState.CROSS_MOVE; // rist käib esimesena
 	private boolean aiBegins = false;
 	private AiPlayer ai;
 
+	/**
+	 * Defineerib mängu oleku, milleks võib olla risti või ringi võit 
+	 * või kordi liikuda või viik.
+	 */
+	
 	public enum GameState {
 		CROSS_MOVE, CIRCLE_MOVE, CROSS_WIN, CIRCLE_WIN, DRAW
 	}
@@ -34,6 +47,13 @@ public class GameLoop {
 	public void setAiBegins(boolean aiBegins) {
 		this.aiBegins = aiBegins;
 	}
+	
+	/**
+	 * Töötle hiirelt saadud sisendit. Esmalt teed käigu
+	 * mängija valitud ruudule, see järel teeb käigu arvuti.
+	 * Kontrollitakse kohe, kas tegemist on võidu või viigi
+	 * situatsiooniga.
+	 */
 
 	public void handlePress(int x, int y) {
 		
@@ -49,6 +69,11 @@ public class GameLoop {
 		}
 		handleWin();
 	}
+	
+	/**
+	 * Tegeleb mängija poolt valitud ruudu töötlemisega.
+	 * Kontrollib kas valitud ruut pole juba täis.
+	 */
 	
 	private void handlePlayerSelection(int x, int y) {
 		if (field.getSlot(x, y) == FieldSlot.EMPTY){
@@ -66,6 +91,12 @@ public class GameLoop {
 			}
 		}
 	}
+	
+	/**
+	 * Kasutades analüsaatori klassi kontrollib,
+	 * kas tegemist on võidu või viigiga. Uuendab
+	 * vastavalt mängu olekut.
+	 */
 
 	private void handleWin(){
 		switch (analyser.getState()) {
@@ -82,6 +113,10 @@ public class GameLoop {
 			break;
 		}
 	}
+	
+	/**
+	 * Initsialiseerib mängu oleku.
+	 */
 
 	public void init() {
 		field.reset();	
