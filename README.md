@@ -1,3 +1,5 @@
+Tehtud TÜ tehisintellekti aine jaoks.
+
 Trull
 =====
 
